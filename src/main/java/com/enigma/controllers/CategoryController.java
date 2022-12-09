@@ -5,7 +5,7 @@ import com.enigma.models.requests.CategoryRequest;
 import com.enigma.models.responses.AbsResponse;
 import com.enigma.models.responses.CommonResponse;
 import com.enigma.models.responses.PagedResponse;
-import com.enigma.services.ICategoryService;
+import com.enigma.services.interfaces.ICategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -1,8 +1,12 @@
 package com.enigma.services;
 
+import com.enigma.entities.Category;
 import com.enigma.entities.Product;
+import com.enigma.models.requests.ProductRequest;
 import com.enigma.repositories.ProductRepo;
+import com.enigma.services.interfaces.IProductService;
 import com.enigma.shared.NotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,14 +24,14 @@ public class ProductService implements IProductService {
     ProductRepo repo;
     @Autowired
     CategoryService categoryService;
-
+    @Autowired
+    ModelMapper mapper;
     @Override
-    public Product create(Product product) throws Exception {
-        try {
-            return repo.save(product);
-        } catch (Exception e) {
-            throw e;
-        }
+    public Product create(ProductRequest product) throws Exception {
+            Category category = categoryService.findByName(product.getCategoryName());
+            Product mapped = mapper.map(product, Product.class);
+            mapped.setCategoryId(category);
+            return repo.save(mapped);
     }
 
     @Override

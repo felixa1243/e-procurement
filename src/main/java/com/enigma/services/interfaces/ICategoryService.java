@@ -1,4 +1,4 @@
-package com.enigma.services;
+package com.enigma.services.interfaces;
 
 import com.enigma.entities.Category;
 import org.springframework.data.domain.Page;

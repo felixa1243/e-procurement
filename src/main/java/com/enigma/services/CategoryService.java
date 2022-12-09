@@ -2,6 +2,7 @@ package com.enigma.services;
 
 import com.enigma.entities.Category;
 import com.enigma.repositories.CategoryRepo;
+import com.enigma.services.interfaces.ICategoryService;
 import com.enigma.shared.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,6 @@ import java.util.Optional;
 public class CategoryService implements ICategoryService {
     @Autowired
     CategoryRepo repo;
-
     @Override
     public Category create(Category category) {
         return repo.save(category);

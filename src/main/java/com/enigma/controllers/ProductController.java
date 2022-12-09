@@ -1,11 +1,10 @@
 package com.enigma.controllers;
 
 import com.enigma.entities.Product;
-import com.enigma.models.requests.ProductDto;
 import com.enigma.models.requests.ProductRequest;
 import com.enigma.models.responses.CommonResponse;
 import com.enigma.models.responses.PagedResponse;
-import com.enigma.services.IProductService;
+import com.enigma.services.interfaces.IProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,11 +22,9 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<CommonResponse<Product>> create(@RequestBody ProductRequest request) throws Exception {
-        ProductDto dto = mapper.map(request, ProductDto.class);
-        Product product = mapper.map(dto, Product.class);
         CommonResponse<Product> response = new CommonResponse<>();
         response.setStatus("OK");
-        response.setContent(product);
+        response.setContent(productService.create(request));
         response.setFail(false);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
