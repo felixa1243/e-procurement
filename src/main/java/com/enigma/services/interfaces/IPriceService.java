@@ -1,11 +1,13 @@
 package com.enigma.services.interfaces;
 
 import com.enigma.entities.ProductPrice;
-import com.enigma.entities.Vendor;
-import org.springframework.data.domain.Page;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface IPriceService {
-    ProductPrice create(ProductPrice price);
-    Page<ProductPrice> getAll(int page, int size, String direction, String sortBy);
-    ProductPrice update(float oldPrice,float newPrice);
+    Optional<ProductPrice> getByProductId(String id) throws Exception;
+
+    Optional<ProductPrice> getByVendorId(String id) throws Exception;
+    List<ProductPrice> getAll();
 }

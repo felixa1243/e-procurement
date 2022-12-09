@@ -12,10 +12,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ErrorController {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(NotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Not found",e.getMessage()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Not found", e.getMessage()));
     }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorResponse> handleDataIntegrityException(DataIntegrityViolationException e){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("10000",e.getMessage()));
+    public ResponseEntity<ErrorResponse> handleDataIntegrityException(DataIntegrityViolationException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("10000", e.getMessage()));
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("10500", e.getMessage()));
     }
 }

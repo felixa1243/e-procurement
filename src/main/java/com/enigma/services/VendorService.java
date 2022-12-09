@@ -6,6 +6,7 @@ import com.enigma.entities.Vendor;
 import com.enigma.models.requests.VendorRequest;
 import com.enigma.repositories.PriceRepo;
 import com.enigma.repositories.VendorRepo;
+import com.enigma.services.interfaces.IPriceService;
 import com.enigma.services.interfaces.IProductService;
 import com.enigma.services.interfaces.IVendorService;
 import com.enigma.shared.NotFoundException;
@@ -18,7 +19,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -30,6 +33,8 @@ public class VendorService implements IVendorService {
     @Autowired
     PriceRepo priceRepo;
     @Autowired
+    IPriceService priceService;
+    @Autowired
     ModelMapper mapper;
 
     @Override
@@ -38,6 +43,7 @@ public class VendorService implements IVendorService {
         Product product = productService.getById(vendorRequest.getProducts()).get();
 
         Vendor vendor = repo.save(mapper.map(vendorRequest, Vendor.class));
+        vendor.getProducts().add(product);
         ProductPrice price = new ProductPrice();
 
         price.setVendor(vendor);
@@ -58,6 +64,11 @@ public class VendorService implements IVendorService {
     }
 
     @Override
+    public List<ProductPrice> getAll() {
+        return priceRepo.findAll();
+    }
+
+    @Override
     public Optional<Vendor> getById(String id) throws Exception {
         Optional<Vendor> result = repo.findById(id);
         if (result.isEmpty()) {
@@ -71,5 +82,32 @@ public class VendorService implements IVendorService {
         Optional<Vendor> result = getById(id);
         repo.delete(result.get());
         return "Vendor with id " + id + " was deleted";
+    }
+
+    @Override
+    public ProductPrice update(String id, float newPrice) throws Exception {
+        ProductPrice result = priceService.getByProductId(id).get();
+        result.setActive(false);
+        priceRepo.save(result);
+        result.setPrice(newPrice);
+        result.setActive(true);
+        priceRepo.save(result);
+        return result;
+    }
+
+    @Override
+    public Set<Product> getProduct(String id) throws Exception {
+        Vendor vendor = getById(id).get();
+        return vendor.getProducts();
+    }
+
+    @Override
+    public ProductPrice getPriceByVendorId(String id) throws Exception {
+        Vendor vendor = getById(id).get();
+        Optional<ProductPrice> result = priceRepo.findByVendor(vendor);
+        if (result.isEmpty()) {
+            throw new NotFoundException();
+        }
+        return result.get();
     }
 }
