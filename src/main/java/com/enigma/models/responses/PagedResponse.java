@@ -14,4 +14,5 @@ public class PagedResponse <T> {
     private Long totalSize;
     private Integer totalPage;
     private List<T> content;
+    private boolean hasNext;
 }

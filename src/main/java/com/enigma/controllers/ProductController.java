@@ -44,6 +44,7 @@ public class ProductController {
         response.setFetchedSize(products.getNumberOfElements());
         response.setTotalSize(products.getTotalElements());
         response.setTotalPage(products.getTotalPages());
+        response.setHasNext(products.hasNext());
 
         return ResponseEntity.status(200).body(response);
     }

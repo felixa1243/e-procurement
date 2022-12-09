@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ErrorController {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(NotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Not found"));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Not found",e.getMessage()));
     }
 }

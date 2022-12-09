@@ -9,7 +9,6 @@ import com.enigma.services.interfaces.ICategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,18 +26,25 @@ public class CategoryController {
         return ResponseEntity.status(200).body(new CommonResponse<>());
     }
 
-    @GetMapping(params = {"page", "size", "sort-by"})
-    public ResponseEntity getAll(@RequestParam(name = "page") int page, @RequestParam(name = "size", required = false, defaultValue = "10") int size, @RequestParam(name = "sort-by", defaultValue = "ASC", required = false) String sortBy) {
-        Page<Category> pagedResult = service.getAll(PageRequest.of(page, size));
-        PagedResponse<Category> result = new PagedResponse<>();
-        result.setPage(page);
-        result.setSize(size);
-        result.setFetchedSize(pagedResult.getNumberOfElements());
-        result.setTotalSize(pagedResult.getTotalElements());
-        result.setTotalPage(pagedResult.getTotalPages());
-        result.setContent(pagedResult.toList());
+    @GetMapping
+    public ResponseEntity<PagedResponse<Category>> getAll(
+            @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+            @RequestParam(name = "direction", required = false, defaultValue = "ASC") String direction,
+            @RequestParam(name = "sortBy", required = false, defaultValue = "productId") String sortBy
+    ) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(pagedResult);
+        Page<Category> products = service.getAll(page, size, direction, sortBy);
+        PagedResponse<Category> response = new PagedResponse<>();
+        response.setContent(products.toList());
+        response.setPage(page);
+        response.setSize(size);
+        response.setFetchedSize(products.getNumberOfElements());
+        response.setTotalSize(products.getTotalElements());
+        response.setTotalPage(products.getTotalPages());
+        response.setHasNext(products.hasNext());
+
+        return ResponseEntity.status(200).body(response);
     }
 
     @PostMapping

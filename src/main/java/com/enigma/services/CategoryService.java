@@ -6,15 +6,19 @@ import com.enigma.services.interfaces.ICategoryService;
 import com.enigma.shared.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CategoryService implements ICategoryService {
     @Autowired
     CategoryRepo repo;
+
     @Override
     public Category create(Category category) {
         return repo.save(category);
@@ -22,7 +26,11 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public Category findByName(String name) throws Exception {
-        return repo.findByCategoryName(name).get(0);
+        List<Category> result = repo.findByCategoryName(name);
+        if (result.isEmpty()) {
+            throw new NotFoundException("Category not found");
+        }
+        return result.get(0);
     }
 
     @Override
@@ -36,12 +44,13 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public String delete(String id) {
-
         return "category with id " + id + "was not found";
     }
 
     @Override
-    public Page<Category> getAll(Pageable pageable) {
+    public Page<Category> getAll(int page, int size, String direction, String sortBy) {
+        Sort sort = Sort.by(Sort.Direction.valueOf(direction), sortBy);
+        Pageable pageable = PageRequest.of((page - 1), size, sort);
         return repo.findAll(pageable);
     }
 }
