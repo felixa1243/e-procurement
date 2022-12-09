@@ -1,0 +1,25 @@
+server:
+  port: 4000
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: ${USERNAME}
+    password: ${PASSWORD}
+    url: ${URL}
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+    database: POSTGRESQL
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+#service:
+#  payment:
+#    url: ${PAYMENT_SERVICE}
+#  user:
+#    uri: ${USER_SERVICE}
+#upload:
+#  path: ${FILE_PATH}
