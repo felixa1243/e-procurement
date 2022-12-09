@@ -22,6 +22,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "categoryId")
     private Category categoryId;
-    @OneToMany(mappedBy = "product")
-    Set<ProductPrice> prices = new HashSet<>();
+//    @OneToMany(mappedBy = "product")
+//    Set<ProductPrice> prices = new HashSet<>();
 }

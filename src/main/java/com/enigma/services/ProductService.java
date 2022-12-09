@@ -15,7 +15,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -26,12 +28,13 @@ public class ProductService implements IProductService {
     CategoryService categoryService;
     @Autowired
     ModelMapper mapper;
+
     @Override
     public Product create(ProductRequest product) throws Exception {
-            Category category = categoryService.findByName(product.getCategoryName());
-            Product mapped = mapper.map(product, Product.class);
-            mapped.setCategoryId(category);
-            return repo.save(mapped);
+        Category category = categoryService.findByName(product.getCategoryName());
+        Product mapped = mapper.map(product, Product.class);
+        mapped.setCategoryId(category);
+        return repo.save(mapped);
     }
 
     @Override
@@ -55,5 +58,10 @@ public class ProductService implements IProductService {
         Optional<Product> result = getById(id);
         repo.delete(result.get());
         return "Product with id " + id + " was deleted";
+    }
+
+    @Override
+    public List<Product> getAll(Set<String> ids) {
+        return repo.findAllById(ids);
     }
 }

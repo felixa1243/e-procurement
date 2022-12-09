@@ -9,16 +9,17 @@ import javax.persistence.*;
 @Table(name = "m_product_price")
 @Data
 public class ProductPrice {
-    @EmbeddedId
-    PriceKey priceKey = new PriceKey();
-    @ManyToOne
-    @MapsId("vendorId")
+    @Id
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    private String priceId;
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vendor_id")
-    Vendor vendor;
-    @ManyToOne
-    @MapsId("productId")
+    private Vendor vendor;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
-    Product product;
+    private Product product;
 
     float price;
     boolean isActive;

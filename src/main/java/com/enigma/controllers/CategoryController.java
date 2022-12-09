@@ -2,8 +2,6 @@ package com.enigma.controllers;
 
 import com.enigma.entities.Category;
 import com.enigma.models.requests.CategoryRequest;
-import com.enigma.models.responses.AbsResponse;
-import com.enigma.models.responses.CommonResponse;
 import com.enigma.models.responses.PagedResponse;
 import com.enigma.services.interfaces.ICategoryService;
 import org.modelmapper.ModelMapper;
@@ -22,16 +20,11 @@ public class CategoryController {
     ModelMapper mapper;
 
     @GetMapping
-    public ResponseEntity<AbsResponse> getAll() {
-        return ResponseEntity.status(200).body(new CommonResponse<>());
-    }
-
-    @GetMapping
     public ResponseEntity<PagedResponse<Category>> getAll(
             @RequestParam(name = "page", required = false, defaultValue = "1") int page,
             @RequestParam(name = "size", required = false, defaultValue = "5") int size,
             @RequestParam(name = "direction", required = false, defaultValue = "ASC") String direction,
-            @RequestParam(name = "sortBy", required = false, defaultValue = "productId") String sortBy
+            @RequestParam(name = "sortBy", required = false, defaultValue = "categoryId") String sortBy
     ) {
 
         Page<Category> products = service.getAll(page, size, direction, sortBy);

@@ -1,10 +1,9 @@
 package com.enigma.controllers;
 
-import com.enigma.entities.Product;
-import com.enigma.models.requests.ProductRequest;
-import com.enigma.models.responses.CommonResponse;
+import com.enigma.entities.ProductPrice;
+import com.enigma.models.requests.VendorRequest;
 import com.enigma.models.responses.PagedResponse;
-import com.enigma.services.interfaces.IProductService;
+import com.enigma.services.interfaces.IVendorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,31 +14,23 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("products")
-public class ProductController {
+@RequestMapping("vendor")
+public class VendorController {
     @Autowired
-    IProductService productService;
+    IVendorService service;
     @Autowired
     ModelMapper mapper;
 
-    @PostMapping
-    public ResponseEntity<CommonResponse<Product>> create(@Valid @RequestBody ProductRequest request) throws Exception {
-        CommonResponse<Product> response = new CommonResponse<>();
-        response.setStatus("OK");
-        response.setContent(productService.create(request));
-        response.setFail(false);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
     @GetMapping
-    public ResponseEntity<PagedResponse<Product>> getAll(
+    public ResponseEntity<PagedResponse<ProductPrice>> getAll(
             @RequestParam(name = "page", required = false, defaultValue = "1") int page,
             @RequestParam(name = "size", required = false, defaultValue = "5") int size,
             @RequestParam(name = "direction", required = false, defaultValue = "ASC") String direction,
-            @RequestParam(name = "sortBy", required = false, defaultValue = "productId") String sortBy
+            @RequestParam(name = "sortBy", required = false,defaultValue = "priceId") String sortBy
     ) {
-        Page<Product> products = productService.getAll(page, size, direction, sortBy);
-        PagedResponse<Product> response = new PagedResponse<>();
+        Page<ProductPrice> products = service.getAll(page, size, direction, sortBy);
+        System.out.println(products);
+        PagedResponse<ProductPrice> response = new PagedResponse<>();
         response.setContent(products.toList());
         response.setPage(page);
         response.setSize(size);
@@ -47,7 +38,16 @@ public class ProductController {
         response.setTotalSize(products.getTotalElements());
         response.setTotalPage(products.getTotalPages());
         response.setHasNext(products.hasNext());
-
         return ResponseEntity.status(200).body(response);
+    }
+
+    @PostMapping
+    public ResponseEntity create(@Valid @RequestBody VendorRequest request) throws Exception {
+
+        return ResponseEntity.status(200).body(service.create(request));
+    }
+    @PatchMapping
+    public ResponseEntity updatePrice(@RequestBody VendorRequest request) throws Exception{
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(request);
     }
 }
