@@ -5,7 +5,7 @@ import com.enigma.entities.ProductPrice;
 import com.enigma.repositories.PriceRepo;
 import com.enigma.services.interfaces.IPriceService;
 import com.enigma.services.interfaces.IProductService;
-import com.enigma.shared.NotFoundException;
+import com.enigma.shared.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +29,14 @@ public class PriceService implements IPriceService {
         return result;
     }
 
-
     @Override
-    public Optional<ProductPrice> getByVendorId(String id) throws Exception {
-        throw new RuntimeException("Not implemented yet");
+    public Optional<ProductPrice> getById(String id) throws Exception {
+        Optional<ProductPrice> result = priceRepo.findById(id);
+        if (result.isPresent()) {
+            return result;
+        }
+
+        throw new NotFoundException("Price with id " + id + " not found");
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.enigma.controllers;
 
 import com.enigma.models.responses.ErrorResponse;
-import com.enigma.shared.NotFoundException;
+import com.enigma.shared.exception.NotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

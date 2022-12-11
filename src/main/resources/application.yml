@@ -16,6 +16,10 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
+token:
+  jwt:
+    secret: ${SECRET}
+    expiration: 7200000
 #service:
 #  payment:
 #    url: ${PAYMENT_SERVICE}

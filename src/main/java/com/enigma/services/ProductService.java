@@ -5,7 +5,7 @@ import com.enigma.entities.Product;
 import com.enigma.models.requests.ProductRequest;
 import com.enigma.repositories.ProductRepo;
 import com.enigma.services.interfaces.IProductService;
-import com.enigma.shared.NotFoundException;
+import com.enigma.shared.exception.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

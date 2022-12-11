@@ -1,6 +1,5 @@
 package com.enigma.services.interfaces;
 
-import com.enigma.entities.Product;
 import com.enigma.entities.ProductPrice;
 import com.enigma.entities.Vendor;
 import com.enigma.models.requests.VendorRequest;
@@ -22,7 +21,7 @@ public interface IVendorService {
 
     ProductPrice update(String id, float newPrice) throws Exception;
 
-    Set<Product> getProduct(String id) throws Exception;
+    Set<ProductPrice> getProduct(String id) throws Exception;
 
     ProductPrice getPriceByVendorId(String id) throws Exception;
 }

@@ -4,8 +4,6 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "m_product")
@@ -22,6 +20,4 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "categoryId")
     private Category categoryId;
-//    @OneToMany(mappedBy = "product")
-//    Set<ProductPrice> prices = new HashSet<>();
 }

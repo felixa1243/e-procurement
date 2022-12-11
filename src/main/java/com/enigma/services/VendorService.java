@@ -9,7 +9,7 @@ import com.enigma.repositories.VendorRepo;
 import com.enigma.services.interfaces.IPriceService;
 import com.enigma.services.interfaces.IProductService;
 import com.enigma.services.interfaces.IVendorService;
-import com.enigma.shared.NotFoundException;
+import com.enigma.shared.exception.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,7 +43,6 @@ public class VendorService implements IVendorService {
         Product product = productService.getById(vendorRequest.getProducts()).get();
 
         Vendor vendor = repo.save(mapper.map(vendorRequest, Vendor.class));
-        vendor.getProducts().add(product);
         ProductPrice price = new ProductPrice();
 
         price.setVendor(vendor);
@@ -51,6 +50,7 @@ public class VendorService implements IVendorService {
         price.setPrice(vendorRequest.getPrice());
         price.setActive(true);
 
+        vendor.getProducts().add(price);
         priceRepo.save(price);
         System.out.println(priceRepo.findAll());
         return vendor;
@@ -96,7 +96,7 @@ public class VendorService implements IVendorService {
     }
 
     @Override
-    public Set<Product> getProduct(String id) throws Exception {
+    public Set<ProductPrice> getProduct(String id) throws Exception {
         Vendor vendor = getById(id).get();
         return vendor.getProducts();
     }

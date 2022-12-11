@@ -7,7 +7,6 @@ import java.util.Optional;
 
 public interface IPriceService {
     Optional<ProductPrice> getByProductId(String id) throws Exception;
-
-    Optional<ProductPrice> getByVendorId(String id) throws Exception;
+    Optional<ProductPrice> getById(String id) throws Exception;
     List<ProductPrice> getAll();
 }

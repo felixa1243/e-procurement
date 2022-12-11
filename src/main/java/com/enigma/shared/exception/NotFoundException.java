@@ -1,4 +1,4 @@
-package com.enigma.shared;
+package com.enigma.shared.exception;
 
 public class NotFoundException extends Exception{
     public NotFoundException() {
